@@ -24,7 +24,7 @@ This is a C++ library providing support for Luna Datasets framework. It provides
   * `xlsx` — read/write dataframe from/to files in Microsoft Excel Open XML Format;
   * `csv` — read/write dataframe from/to file in [CSV format](https://tools.ietf.org/html/rfc4180).
 
-# API
+# C API
 
 ## Types
 #### using MatrixDataPtr = const char * const *;
@@ -40,3 +40,10 @@ Luna is not allowed to directly modify neither array elements nor the strings it
 Deletes a Matrix2d object associated with given matrix data pointer.
 
 ### IO
+#### MatrixDataPtr read_csv(const char *filename, size_t *rows, size_t *cols, int* error)
+Reads file from the given path. File is required to be in [CSV format](https://tools.ietf.org/html/rfc4180). Upon successfull read a pointer to array with Dataframe contents is returned, and array sizes are written to `rows` and `cols` arguments. Upon failure, `NULL` pointer is returned and `error` is set to a non-zero value.
+
+
+#### void write_csv(const char *filename, char **mat, size_t rows, size_t cols, int* error)
+Writes data from given array to CSV file. Result code will be stored under `error` pointer: 0 if success, non-zero in case of error.
+
