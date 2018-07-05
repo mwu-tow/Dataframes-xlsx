@@ -146,7 +146,7 @@ std::unique_ptr<Matrix2d> loadCSV(const char *filename, char separator)
 
 extern "C"
 {
-	EXPORT Matrix2d *read_csv(const char *filename, size_t *rows, size_t *cols, int* error) noexcept
+	EXPORT MatrixDataPtr read_csv(const char *filename, size_t *rows, size_t *cols, int* error) noexcept
 	{
 		try
 		{
@@ -154,7 +154,7 @@ extern "C"
 			*rows = ret->rowCount;
 			*cols = ret->columnCount;
 			*error = 0;
-			return ret.release();
+			return ret.release()->data();
 		}
 		catch(std::exception &e)
 		{
