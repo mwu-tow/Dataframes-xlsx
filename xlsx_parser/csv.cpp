@@ -3,8 +3,9 @@
 
 #include <algorithm>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <memory>
+#include <sstream>
 
 using namespace std::literals;
 
@@ -44,10 +45,11 @@ struct ParsedCsv
 		const auto rowCount = records.size();
 		const auto columnCount = [&]
 		{
-			auto ret = 0ull;
-			for(auto &&record : records)
-				ret = std::max(ret, record.size());
-			return ret;
+			const auto biggestRecord = std::max_element(records.begin(), records.end(), 
+				[] (auto &record1, auto &record2) { return record1.size() < record2.size(); });
+			if(biggestRecord != records.end())
+				return biggestRecord->size();
+			return std::size_t(0);
 		}();
 
 
