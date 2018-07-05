@@ -1,7 +1,9 @@
+#define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #include <xlnt/xlnt.hpp>
 
 #include "Matrix2d.h"
 #include "Common.h"
+#include "Error.h"
 
 #ifdef _MSC_VER
 #ifdef _DEBUG
@@ -74,40 +76,19 @@ extern "C"
 
 	EXPORT MatrixDataPtr read_xlsx(const char *filename, const char **error) noexcept
 	{
-		try
+		return translateExceptionToError(error, [&] 
 		{
 			auto mat = xlsxParseFile(filename);
 			return mat.release()->data();
-		}
-		catch(std::exception &e)
-		{
-			errorMessage = e.what();
-			*error = errorMessage.c_str();
-		}
-		catch(...)
-		{
-			errorMessage = "unknown exception";
-			*error = errorMessage.c_str();
-		}
-		return nullptr;
+		});
 	}
 
 	EXPORT void write_xlsx(MatrixDataPtr mat, const char *filename, const char **error) noexcept
 	{
-		try
+		translateExceptionToError(error, [&] 
 		{
-			xlsxPrintToFile(*Matrix2d::fromData(mat), filename);
-		}
-		catch(std::exception &e)
-		{
-			errorMessage = e.what();
-			*error = errorMessage.c_str();
-		}
-		catch(...)
-		{
-			errorMessage = "unknown exception";
-			*error = errorMessage.c_str();
-		}
+			xlsxPrintToFile(*Matrix2d::fromData(mat), filename); 
+		});
 	}
 
 
