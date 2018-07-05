@@ -11,7 +11,7 @@ namespace
 
 	// TODO: at some point in future thread-safety should be considered
 	// (either hide this map behind mutex or document safety requirements)
-	std::unordered_map<const void*, Matrix2d*> pointersToTheirManagers;
+	std::unordered_map<MatrixDataPtr, Matrix2d*> pointersToTheirManagers;
 }
 
 std::string & Matrix2d::access(size_t row, size_t column)
@@ -66,14 +66,14 @@ MatrixDataPtr Matrix2d::data() const noexcept
 	return items.data();
 }
 
-Matrix2d * Matrix2d::fromData(const void *data)
+Matrix2d * Matrix2d::fromData(MatrixDataPtr data)
 {
 	return pointersToTheirManagers.at(data);
 }
 
 extern "C" 
 {
-	void mat_delete(void *mat) noexcept
+	void mat_delete(MatrixDataPtr mat) noexcept
 	{
 		try
 		{

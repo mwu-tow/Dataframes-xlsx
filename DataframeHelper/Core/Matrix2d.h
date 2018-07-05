@@ -31,10 +31,10 @@ public:
 	size_t makeIndex(size_t row, size_t column) const noexcept;
 
 	MatrixDataPtr data() const noexcept;
-	static Matrix2d *fromData(const void *data);
+	static Matrix2d *fromData(MatrixDataPtr data);
 };
 
 extern "C"
 {
-	EXPORT void mat_delete(void *mat) noexcept; // NOTE: mat is not the Matrix2d object but its data() value
+	EXPORT void mat_delete(MatrixDataPtr mat) noexcept; // NOTE: mat is not the Matrix2d object but its data() value
 }

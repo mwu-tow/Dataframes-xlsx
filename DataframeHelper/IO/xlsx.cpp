@@ -1,9 +1,9 @@
 #define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #include <xlnt/xlnt.hpp>
 
-#include "Matrix2d.h"
-#include "Common.h"
-#include "Error.h"
+#include "Core/Matrix2d.h"
+#include "Core/Common.h"
+#include "Core/Error.h"
 
 #ifdef _MSC_VER
 #ifdef _DEBUG
@@ -91,9 +91,9 @@ extern "C"
 
 }
 
-int main()
-{
-	auto matrix = xlsxParseFile(R"(C:\Users\mwurb\Documents\kalkulator.xlsx)");
-	xlsxPrintToFile(*matrix, R"(C:\Users\mwurb\Documents\kalkulator2.xlsx)");
-	return EXIT_SUCCESS;
-}
+// int main()
+// {
+// 	auto matrix = xlsxParseFile(R"(C:\Users\mwurb\Documents\kalkulator.xlsx)");
+// 	xlsxPrintToFile(*matrix, R"(C:\Users\mwurb\Documents\kalkulator2.xlsx)");
+// 	return EXIT_SUCCESS;
+// }

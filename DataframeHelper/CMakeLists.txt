@@ -46,12 +46,12 @@ if(NOT XLNT_LIBRARY)
     message(WARNING "Cannot find xlnt library " ${XLNT_LIBRARY})
 endif()
 
-file(GLOB HEADER_FILES ${PROJECT_SOURCE_DIR}/*.h)
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE HEADER_FILES ${PROJECT_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/*.cpp)
 
 add_library(DataframeHelper SHARED ${HEADER_FILES} ${SRC_FILES})
 
-target_include_directories(DataframeHelper PRIVATE ${XLNT_INCLUDE})
+target_include_directories(DataframeHelper PRIVATE ${XLNT_INCLUDE} ${PROJECT_SOURCE_DIR})
 if(WIN32)
 target_link_libraries(DataframeHelper debug ${XLNT_LIBRARY_DEBUG})
 target_link_libraries(DataframeHelper optimized ${XLNT_LIBRARY})
