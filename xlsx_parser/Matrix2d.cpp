@@ -61,7 +61,7 @@ const std::string& Matrix2d::load(size_t row, size_t column) const
 	return cellContents.at(index);
 }
 
-const char * const * Matrix2d::data() const noexcept
+MatrixDataPtr Matrix2d::data() const noexcept
 {
 	return items.data();
 }

@@ -14,6 +14,8 @@
 namespace
 {
 	using namespace std::literals;
+	
+	thread_local std::string errorMessage;
 
 	auto xlsxParseFile(const char *filename)
 	{
@@ -43,36 +45,77 @@ namespace
 			throw std::runtime_error("Failed to parse file `"s + filename + "` : " + e.what());
 		}
 	}
+
+	void xlsxPrintToFile(const Matrix2d &matrix, const char *filename)
+	{
+		xlnt::workbook wb;
+		auto sheet = wb.active_sheet();
+		sheet.title("Written from Luna");
+
+		for(auto row = 0ull; row < matrix.rowCount; row++)
+		{
+			for(auto column = 0ull; column < matrix.columnCount; column++)
+			{
+				// translate indices to from-1-indexed xlnt types
+				const auto xlsRow = static_cast<xlnt::row_t>(row + 1);
+				const auto xlsColumn = static_cast<xlnt::column_t::index_t>(column + 1);
+
+				const auto cellContents = matrix.load(row, column);
+				sheet.cell(xlsColumn, xlsRow).value(cellContents);
+			}
+		}
+
+		wb.save(filename);
+	}
 }
 
 extern "C"
 {
-	EXPORT Matrix2d * matrixFromXlsxFile(const char *filename) noexcept
-	{
-		try
-		{
-			// .release takes ownership of the objects and returns it to the caller
-			return xlsxParseFile(filename).release(); 
-		}
-		catch (std::exception &)
-		{
-			return nullptr;
-		}
-	}
 
-	EXPORT void releaseMatrix(Matrix2d *matrix) noexcept
+	EXPORT MatrixDataPtr read_xlsx(const char *filename, const char **error) noexcept
 	{
 		try
 		{
-			delete matrix;
+			auto mat = xlsxParseFile(filename);
+			return mat.release()->data();
+		}
+		catch(std::exception &e)
+		{
+			errorMessage = e.what();
+			*error = errorMessage.c_str();
 		}
 		catch(...)
-		{}
+		{
+			errorMessage = "unknown exception";
+			*error = errorMessage.c_str();
+		}
+		return nullptr;
 	}
+
+	EXPORT void write_xlsx(MatrixDataPtr mat, const char *filename, const char **error) noexcept
+	{
+		try
+		{
+			xlsxPrintToFile(*Matrix2d::fromData(mat), filename);
+		}
+		catch(std::exception &e)
+		{
+			errorMessage = e.what();
+			*error = errorMessage.c_str();
+		}
+		catch(...)
+		{
+			errorMessage = "unknown exception";
+			*error = errorMessage.c_str();
+		}
+	}
+
+
 }
 
-// int main()
-// {
-// 	auto matrix = matrixFromXlsxFile(R"(C:\Users\mwurb\Documents\kalkulator.xlsx)");
-// 	return EXIT_SUCCESS;
-// }
+int main()
+{
+	auto matrix = xlsxParseFile(R"(C:\Users\mwurb\Documents\kalkulator.xlsx)");
+	xlsxPrintToFile(*matrix, R"(C:\Users\mwurb\Documents\kalkulator2.xlsx)");
+	return EXIT_SUCCESS;
+}

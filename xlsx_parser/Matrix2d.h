@@ -5,6 +5,8 @@
 
 #include "Common.h"
 
+using MatrixDataPtr = const char * const *;
+
 // Helper class that manages resources for 2D-array for Luna language.
 // NOTE: its sizes cannot be changed once the object is created.
 class Matrix2d
@@ -28,7 +30,7 @@ public:
 	size_t cellCount() const;
 	size_t makeIndex(size_t row, size_t column) const noexcept;
 
-	const char * const *data() const noexcept;
+	MatrixDataPtr data() const noexcept;
 	static Matrix2d *fromData(const void *data);
 };
 
