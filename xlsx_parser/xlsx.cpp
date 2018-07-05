@@ -16,9 +16,6 @@
 namespace
 {
 	using namespace std::literals;
-	
-	thread_local std::string errorMessage;
-
 	auto xlsxParseFile(const char *filename)
 	{
 		try
