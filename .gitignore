@@ -2,3 +2,4 @@ xlsx_parser/build/*
 */CMakeFiles/*
 *.so
 .vscode
+build/*
