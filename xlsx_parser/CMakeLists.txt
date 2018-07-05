@@ -14,7 +14,7 @@ endif()
 
 
 # set output directory
-set(OUT_DIR ${CMAKE_CURRENT_LIST_DIR}/../native_libs/windows)
+set(OUT_DIR ${CMAKE_CURRENT_LIST_DIR}/../native_libs/${PLATFORM_DIR_SUFFIX})
 if(WIN32)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUT_DIR})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUT_DIR})
