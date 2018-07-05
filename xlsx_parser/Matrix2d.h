@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "Common.h"
@@ -13,6 +12,9 @@ class Matrix2d
 	std::vector<std::string> cellContents; // manages memory for cell contents
 	std::vector<const char *> items; // exposes strings as Luna-consumable array of C-style strings
 
+	std::string &access(size_t row, size_t column);
+	void fixPointer(size_t row, size_t column);
+
 public:
 	const size_t rowCount = 0;
 	const size_t columnCount = 0;
@@ -21,10 +23,13 @@ public:
 	~Matrix2d();
 
 	void store(size_t row, size_t column, std::string contents);
+	const std::string& load(size_t row, size_t column) const;
 
 	size_t cellCount() const;
-	size_t makeIndex(size_t row, size_t column) noexcept;
+	size_t makeIndex(size_t row, size_t column) const noexcept;
+
 	const char * const *data() const noexcept;
+	static Matrix2d *fromData(const void *data);
 };
 
 extern "C"
