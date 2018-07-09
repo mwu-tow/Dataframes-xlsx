@@ -23,7 +23,10 @@ std::string & Matrix2d::access(size_t row, size_t column)
 void Matrix2d::fixPointer(size_t row, size_t column)
 {
 	const auto index = makeIndex(row, column);
-	items.at(index) = cellContents.at(index).c_str();
+	const auto &value = cellContents.at(index);
+	items.at(index) = value.empty()
+		? nullptr
+		: value.c_str();
 }
 
 Matrix2d::Matrix2d(size_t rowCount, size_t columnCount) : rowCount(rowCount), columnCount(columnCount)
