@@ -114,3 +114,13 @@ extern "C"
 	}
 }
 
+EXPORT void store(MatrixDataPtr mat, size_t row, size_t column, const char *string) noexcept
+{
+		try
+		{
+			return Matrix2d::fromData(mat)->store(row, column, string);
+		}
+		catch(...) 
+		{}
+}
+

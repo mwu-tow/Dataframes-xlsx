@@ -40,4 +40,5 @@ extern "C"
 {
 	EXPORT void mat_delete(MatrixDataPtr mat) noexcept; // NOTE: mat is not the Matrix2d object but its data() value
 	EXPORT MatrixDataPtr copyColums(MatrixDataPtr mat, size_t colummCount, size_t *columnsToCopy) noexcept;
+	EXPORT void store(MatrixDataPtr mat, size_t row, size_t column, const char *string) noexcept;
 }
