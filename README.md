@@ -2,7 +2,7 @@
 This is a C++ library providing support for Luna Datasets framework. It provides function both for dataset file I/O operations and basic array splicing.
 
 # Third party dependencies
-* [xlnt library](https://github.com/tfussell/xlnt) (C++/CMake) — needed for .xlsx file format support.
+* [xlnt library](https://github.com/mwu-tow/xlnt) (C++/CMake) — needed for .xlsx file format support. NOTE: On MacOS mwu-tow's fork is needed to fix the compilation issue. On other platforms, official library repo can be used.
 
 # Build & Install
 * have installed `xlnt` library either:
