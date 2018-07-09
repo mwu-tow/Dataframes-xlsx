@@ -71,6 +71,22 @@ Matrix2d * Matrix2d::fromData(MatrixDataPtr data)
 	return pointersToTheirManagers.at(data);
 }
 
+std::unique_ptr<Matrix2d> Matrix2d::copyColumns(size_t columnCount, size_t *columnsToCopy) const
+{
+	auto ret = std::make_unique<Matrix2d>(rowCount, columnCount);
+	for(auto row = 0ull; row < rowCount; row++)
+	{
+		for(auto column = 0ull; column < columnCount; column++)
+		{
+			const auto sourceColumnIndex = columnsToCopy[column];
+
+			auto value = load(row, sourceColumnIndex);
+			ret->store(row, column, std::move(value));
+		}
+	}
+	return ret;
+}
+
 extern "C" 
 {
 	void mat_delete(MatrixDataPtr mat) noexcept
@@ -81,4 +97,17 @@ extern "C"
 		}
 		catch(...) {}
 	}
+
+	MatrixDataPtr copyColums(MatrixDataPtr mat, size_t colummCount, size_t *columnsToCopy) noexcept
+	{
+		try
+		{
+			return Matrix2d::fromData(mat)->copyColumns(colummCount, columnsToCopy).release()->data();
+		}
+		catch(...) 
+		{
+			return nullptr;
+		}
+	}
 }
+

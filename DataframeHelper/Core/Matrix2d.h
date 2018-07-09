@@ -32,9 +32,12 @@ public:
 
 	MatrixDataPtr data() const noexcept;
 	static Matrix2d *fromData(MatrixDataPtr data);
+
+	std::unique_ptr<Matrix2d> copyColumns(size_t columnCount, size_t *columnsToCopy) const;
 };
 
 extern "C"
 {
 	EXPORT void mat_delete(MatrixDataPtr mat) noexcept; // NOTE: mat is not the Matrix2d object but its data() value
+	EXPORT MatrixDataPtr copyColums(MatrixDataPtr mat, size_t colummCount, size_t *columnsToCopy) noexcept;
 }
